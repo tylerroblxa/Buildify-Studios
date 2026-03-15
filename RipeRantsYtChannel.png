@@ -1,0 +1,85 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import { RobloxGame } from "@/lib/data";
+
+interface GameStats {
+  playing: number;
+  visits: number;
+}
+
+export default function GameCard({ game }: { game: RobloxGame }) {
+  const [stats, setStats] = useState<GameStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const res = await fetch(`/api/roblox?universeIds=${game.universeId}`);
+        const json = await res.json();
+        if (json.data && json.data[game.universeId]) {
+          setStats(json.data[game.universeId]);
+        }
+      } catch (error) {
+        setLoading(false);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchStats();
+  }, [game.universeId]);
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
+    return num.toString();
+  };
+
+  return (
+    <div className="group border border-[#1a1a1a] bg-[#0c0c0c] hover:border-[#333] transition-colors overflow-hidden">
+      <div className="relative aspect-video w-full bg-[#111] overflow-hidden">
+        <Image
+          src={game.imageUrl}
+          alt={game.name}
+          fill
+          className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
+        />
+        <div className="absolute inset-0 border-b border-[#1a1a1a]" />
+      </div>
+
+      <div className="p-5 flex flex-col">
+        <div className="flex justify-between items-start mb-6">
+          <h3 className="text-xl font-black uppercase tracking-tighter leading-none">{game.name}</h3>
+          {game.playUrl && (
+            <a 
+              href={game.playUrl} 
+              target="_blank" 
+              rel="noreferrer"
+              className="text-[#666] hover:text-white transition-colors"
+            >
+              <ArrowUpRight size={20} />
+            </a>
+          )}
+        </div>
+        
+        <div className="grid grid-cols-1 gap-2">
+          <div className="flex justify-between items-center py-2 border-t border-[#1a1a1a]">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#444]">Current CCU</span>
+            <span className="text-sm font-black mono text-[#aaa]">
+              {loading ? "---" : stats ? formatNumber(stats.playing) : "ERR"}
+            </span>
+          </div>
+          <div className="flex justify-between items-center py-2 border-t border-[#1a1a1a]">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#444]">Total Visits</span>
+            <span className="text-sm font-black mono text-[#aaa]">
+              {loading ? "---" : stats ? formatNumber(stats.visits) : "ERR"}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,106 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { studioConfig } from "@/lib/data";
+
+const navLinks = [
+  { name: "Home", href: "/" },
+  { name: "Games", href: "/Games" },
+  { name: "Investing", href: "/Investing" },
+  { name: "UGC", href: "/UGC" },
+  { name: "Socials", href: "/Socials" },
+];
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  return (
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 p-4 md:p-6">
+        <nav className="bg-[#0c0c0c] border border-[#1a1a1a] mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+          <Link href="/" className="text-xl font-black tracking-tighter uppercase text-white">
+            {studioConfig.name}
+          </Link>
+
+          <div className="hidden md:flex items-center gap-10">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-xs font-bold uppercase tracking-widest transition-colors ${
+                  pathname === link.href ? "text-white" : "text-[#666] hover:text-[#aaa]"
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <a 
+              href={studioConfig.socials.discord} 
+              target="_blank" 
+              rel="noreferrer"
+              className="geo-button flex items-center gap-2 px-6 py-2 text-[10px]"
+            >
+              <img src="/Discord.png" alt="Discord" className="w-4 h-4 mix-blend-multiply" />
+              <span>Discord</span>
+            </a>
+          </div>
+
+          <button
+            className="md:hidden text-white"
+            onClick={() => setIsOpen(true)}
+          >
+            <Menu size={20} />
+          </button>
+        </nav>
+      </header>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] bg-black p-8 flex flex-col"
+          >
+            <div className="flex justify-between items-center mb-16">
+              <span className="text-2xl font-black uppercase tracking-tighter">{studioConfig.name}</span>
+              <button onClick={() => setIsOpen(false)} className="text-white">
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="flex flex-col gap-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`text-3xl font-black uppercase tracking-tighter transition-colors ${
+                    pathname === link.href ? "text-white" : "text-[#333]"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <div className="mt-12 h-[1px] bg-[#1a1a1a]" />
+              <a 
+                href={studioConfig.socials.discord} 
+                target="_blank" 
+                rel="noreferrer"
+                className="geo-button flex items-center justify-center gap-3 w-full py-4"
+              >
+                <img src="/Discord.png" alt="Discord" className="w-6 h-6 mix-blend-multiply" />
+                <span>Join Discord</span>
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}

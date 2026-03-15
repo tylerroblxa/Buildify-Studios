@@ -1,0 +1,97 @@
+export interface RobloxGame {
+  id: string;
+  name: string;
+  universeId: string;
+  imageUrl: string;
+  playUrl?: string;
+}
+
+export interface UGCItem {
+  id: string;
+  name: string;
+  imageUrl: string;
+  catalogUrl: string;
+  price?: number;
+}
+
+export interface SocialLink {
+  id: string;
+  name: string;
+  platform: 'youtube' | 'instagram' | 'facebook' | 'twitter' | 'roblox' | 'discord' | 'tiktok';
+  url: string;
+  handle?: string;
+  imageUrl?: string;
+}
+
+export const studioConfig = {
+  name: "Buildify Studios",
+  description: "Creating and investing in the next generation of Roblox experiences.",
+  socials: {
+    discord: "https://discord.gg/bullshit",
+    robloxGroup: "https://www.roblox.com/groups/bullshit/bullshit",
+    twitter: "https://twitter.com/bullshit"
+  }
+};
+
+export const studioGames: RobloxGame[] = [
+  {
+    id: "game1",
+    name: "Blox Frutios",
+    universeId: "1234567890", 
+    imageUrl: "/buildifylogo-Photoroom.png", 
+    playUrl: "https://www.roblox.com/games/2753915549/Blox-Fruits",
+  },
+  {
+    id: "game2",
+    name: "Blox Frutios",
+    universeId: "1234567890", 
+    imageUrl: "/buildifylogo-Photoroom.png", 
+    playUrl: "https://www.roblox.com/games/2753915549/Blox-Fruits",
+  }
+];
+
+export const investedGames: RobloxGame[] = [
+  {
+    id: "invest1",
+    name: "Blox Frutios",
+    universeId: "1234567890", 
+    imageUrl: "/buildifylogo-Photoroom.png", 
+    playUrl: "https://www.roblox.com/games/2753915549/Blox-Fruits",
+  },
+];
+
+export const ugcItems: UGCItem[] = [
+  {
+    id: "ugc1",
+    name: "Grey Shades",
+    imageUrl: "https://tr.rbxcdn.com/180DAY-192f5ef78a9fc941f8a2be4edbfd051a/420/420/FaceAccessory/Png/noFilter", 
+    catalogUrl: "https://www.roblox.com/catalog/73632851581744/Grey-Shades",
+    price: 90,
+  },
+  {
+    id: "ugc2",
+    name: "Dark Shades",
+    imageUrl: "https://tr.rbxcdn.com/180DAY-fca17a0a680466f856e66a14ad781d4f/420/420/FaceAccessory/Png/noFilter",
+    catalogUrl: "https://www.roblox.com/catalog/87219226525098/Dark-Shades",
+    price: 90,
+  }
+];
+
+export const socialLinks: SocialLink[] = [
+  {
+    id: "yt1",
+    name: "Ripe Rants",
+    platform: "youtube",
+    url: "https://www.youtube.com/channel/UC-LZCAynVOrp1jCcnO21cWA",
+    handle: "@RipeRants",
+    imageUrl: "/RipeRantsYtChannel.png"
+  },
+  {
+    id: "yt2",
+    name: "Blu",
+    platform: "youtube",
+    url: "https://www.youtube.com/channel/UClH6lIGJ2U3pQyZdLIS9u3g",
+    handle: "@Bluuify",
+    imageUrl: "/BluYtChannel.png"
+  }
+];
